@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>陕西秦洲核与辐射安全技术有限公司科研工时管理系统</title>
+  <style>
+    /* 全局基础重置 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background-color: #f1f5f9;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+    .app-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      min-height: 100vh;
+      background-color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      position: relative;
+    }
+    .global-role-bar {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .company-badge {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+      cursor: pointer;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .company-badge:hover { opacity: 0.8; }
+    .client-badge {
+      font-size: 12px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      background: #f1f5f9;
+      color: #1890ff;
+      font-weight: bold;
+    }
+    .btn-exit-mode {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      background: #fef2f2;
+      color: #ef4444;
+      border: 1px solid #fca5a5;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .btn-exit-mode:hover { background: #fee2e2; }
+
+    .mini-header {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .header-bar {
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+    .nav-back {
+      font-size: 14px;
+      color: #1890ff;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .header-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #0f172a;
+    }
+    .content { padding: 16px; flex: 1; }
+
+    .welcome-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+      text-align: center;
+      flex: 1;
+    }
+    .welcome-logo {
+      width: 72px;
+      height: 72px;
+      background: linear-gradient(135deg, #0284c7, #0f766e);
+      color: #fff;
+      font-size: 36px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.25);
+    }
+    .welcome-title {
+      font-size: 20px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 28px;
+      line-height: 1.4;
+      cursor: pointer;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: background 0.2s;
+    }
+    .welcome-title:hover {
+      background: #e2e8f0;
+    }
+    .role-entry-card {
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      text-align: left;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+    .role-entry-card:hover {
+      transform: translateY(-3px);
+      border-color: #0284c7;
+      box-shadow: 0 8px 24px rgba(2, 132, 199, 0.1);
+    }
+    .role-entry-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-right: 18px;
+      flex-shrink: 0;
+    }
+    .role-entry-title { font-size: 18px; font-weight: 700; color: #0f172a; }
+
+    .card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+      border: 1px solid #e2e8f0;
+    }
+    .portal-card {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid #e2e8f0;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .portal-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+    .portal-card-top {
+      display: flex;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 1px dashed #e2e8f0;
+    }
+    .portal-icon-box {
+      width: 44px; height: 44px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-right: 14px; flex-shrink: 0;
+    }
+    .portal-title { font-size: 16px; font-weight: 700; color: #0f172a; }
+    .portal-desc { font-size: 12px; color: #64748b; margin-top: 2px; }
+    .portal-footer { display: flex; align-items: center; margin-top: 12px; font-size: 12px; }
+    .portal-badge { padding: 3px 10px; border-radius: 4px; font-weight: 500; }
+
+    .tag-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; }
+    .tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 500; }
+    .tag-category { background: #e0f2fe; color: #0369a1; }
+    .tag-year { background: #fef3c7; color: #b45309; }
+    .tag-dept { background: #f1f5f9; color: #475569; }
+    .tag-leader { background: #fdf2f8; color: #be185d; }
+
+    .year-chip-group { display: flex; gap: 8px; margin-top: 10px; }
+    .year-chip {
+      flex: 1; text-align: center; font-size: 13px; padding: 8px 0;
+      border-radius: 6px; background: #f1f5f9; color: #475569;
+      border: 1px solid #e2e8f0; font-weight: 600; cursor: pointer; transition: all 0.2s;
+    }
+    .year-chip.active { background: #e6f7ff; color: #1890ff; border-color: #1890ff; }
+
+    .field-label { display: block; font-size: 13px; color: #64748b; margin-bottom: 6px; font-weight: 600; }
+    .select-box, .field-input {
+      width: 100%; height: 40px; padding: 0 12px;
+      border: 1px solid #cbd5e1; border-radius: 6px;
+      font-size: 14px; background: #ffffff; outline: none; color: #0f172a;
+    }
+    .select-box:focus, .field-input:focus { border-color: #1890ff; }
+    .field-input.highlight { font-weight: bold; color: #0f766e; }
+
+    .admin-action-bar { display: flex; gap: 10px; margin-bottom: 14px; }
+    .btn-action {
+      flex: 1; font-size: 13px; font-weight: bold; padding: 12px 0;
+      border-radius: 8px; border: none; cursor: pointer; text-align: center;
+    }
+    .btn-action.warning { background: #fffbeb; color: #b45309; border: 1px solid #fde68a; }
+    .btn-action.warning:hover { background: #fef3c7; }
+    .btn-action.primary { background: #0f766e; color: #ffffff; }
+    .btn-action.primary:hover { background: #115e59; }
+    .btn-action.secondary { background: #f0fdfa; color: #0f766e; border: 1px solid #99f6e4; }
+    .btn-action.secondary:hover { background: #ccfbf1; }
+
+    .metric-grid { display: flex; gap: 10px; margin-bottom: 14px; }
+    .metric-box { flex: 1; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px 8px; text-align: center; }
+    .metric-title { font-size: 12px; color: #64748b; margin-bottom: 4px; }
+    .metric-num { font-size: 20px; font-weight: bold; color: #0f172a; }
+
+    .module-tabs-row { display: flex; gap: 10px; margin-bottom: 14px; }
+    .module-tab-btn {
+      flex: 1; padding: 12px 0; border: 1px solid #e2e8f0; border-radius: 8px;
+      text-align: center; font-weight: 600; font-size: 14px; color: #64748b; background: #ffffff; cursor: pointer;
+    }
+    .module-tab-btn.active { background: #ccfbf1; color: #0f766e; border-color: #0f766e; font-weight: bold; }
+
+    .summary-banner { background: #f0fdfa; border: 1px solid #99f6e4; border-radius: 8px; padding: 12px; margin-top: 10px; }
+
+    .table-container { border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; margin-top: 12px; background: #ffffff; }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 10px 12px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+    th { background: #f8fafc; font-weight: 600; color: #64748b; }
+    .text-right { text-align: right; }
+    .col-highlight { color: #dc2626; font-weight: bold; }
+
+    .btn-sub {
+      flex: 1; font-size: 13px; font-weight: bold; padding: 10px 0; border-radius: 8px; border: none; cursor: pointer;
+    }
+    .btn-sub.primary { background: #0f766e; color: #ffffff; }
+    .btn-sub.secondary { background: #ffffff; color: #0f766e; border: 1px solid #0f766e; }
+
+    .modal-mask {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5); z-index: 1000; display: none; align-items: center; justify-content: center; padding: 16px;
+    }
+    .modal-mask.show { display: flex; }
+    .modal-box {
+      background: #ffffff; width: 100%; max-width: 520px; border-radius: 14px; overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15); animation: modalFadeIn 0.2s ease-out;
+    }
+    @keyframes modalFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    .modal-header { padding: 14px 18px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; }
+    .modal-title { font-size: 16px; font-weight: bold; color: #0f172a; }
+    .modal-close { font-size: 20px; color: #94a3b8; cursor: pointer; }
+    .modal-body { padding: 18px; max-height: 75vh; overflow-y: auto; }
+    .modal-footer { padding: 12px 18px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; }
+
+    .role-tag { font-size: 11px; padding: 2px 6px; border-radius: 4px; background: #f1f5f9; color: #475569; }
+    .role-tag.leader { background: #fef2f2; color: #b91c1c; font-weight: bold; }
+
+    .summary-dashboard { background: linear-gradient(135deg, #1e3a8a, #2563eb); color: #ffffff; border-radius: 12px; padding: 16px; margin-bottom: 14px; }
+    .dash-title { font-size: 18px; margin: 8px 0; font-weight: bold; }
+    .progress-bar-bg { background: rgba(255,255,255,0.25); height: 8px; border-radius: 4px; margin: 12px 0 8px 0; overflow: hidden; }
+    .progress-bar-fill { height: 100%; background: #10b981; transition: width 0.3s; }
+
+    .letter-group-title { font-size: 14px; font-weight: bold; color: #64748b; margin: 14px 4px 6px 4px; }
+    .clickable-card { cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.15s; }
+    .clickable-card:hover { background: #f8fafc; }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+
+  <!-- ==================== 顶部全局状态栏与身份暗门 ==================== -->
+  <div id="globalRoleBar" class="global-role-bar" style="display:none;">
+    <div class="company-badge" onclick="goWelcomePage()">
+      🏢 <span>陕西秦洲核与辐射安全技术有限公司科研工时管理系统</span>
+    </div>
+    <div class="role-switch-area">
+      <div id="clientRoleBadge" class="client-badge" style="display:none;">客户端</div>
+      <button id="btnExitAdmin" class="btn-exit-mode" style="display:none;" onclick="goWelcomePage()">🚪 退出模式</button>
+    </div>
+  </div>
+
+  <!-- ==================== 0. 起始欢迎选择页面 ==================== -->
+  <div id="pageWelcome" class="page-wrapper" style="display:flex; flex-direction:column; flex:1;">
+    <div class="welcome-container">
+      <div class="welcome-logo">📊</div>
+      <!-- 点击此处的标题将弹出管理员密码验证框 -->
+      <h1 class="welcome-title" onclick="openPasswordModal()" title="点击此处输入密码进入管理员端">
+        陕西秦洲核与辐射安全技术有限公司<br/>科研工时管理系统
+      </h1>
+
+      <div class="role-entry-card" onclick="enterClientRole()">
+        <div class="role-entry-icon" style="background: #e0f2fe; color: #0284c7;">📱</div>
+        <div style="flex:1;">
+          <div class="role-entry-title">客户端</div>
+        </div>
+        <span style="font-size:22px; color:#cbd5e1;">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 1. 客户端主页面 ==================== -->
+  <div id="pageLeader" class="page-wrapper" style="display:none;">
+    <div class="mini-header">
+      <div class="header-bar">
+        <span id="leaderNavBack" class="nav-back" style="display:none;" onclick="goLeaderBack()">〈 返回</span>
+        <span id="leaderHeaderTitle" class="header-title">项目工时核配</span>
+        <span class="nav-back" onclick="goWelcomePage()" style="font-size:12px; font-weight:normal; color:#64748b;">切换角色</span>
+      </div>
+    </div>
+
+    <div id="leaderViewPortal" class="content">
+      <p style="font-size: 13px; color: #64748b; margin-bottom: 14px;">
+        输入项目研发总费用，系统将自动结合后台设定的人工绩效总费用及个人绩效占比算出工时：
+      </p>
+
+      <div class="portal-card" onclick="enterLeaderProjects()">
+        <div class="portal-card-top">
+          <div class="portal-icon-box" style="background:#e0f2fe; color:#0284c7;">📁</div>
+          <div style="flex:1;">
+            <div class="portal-title">在研科研项目</div>
+            <div class="portal-desc">输入项目研发总费用，自动核算团队成员工时</div>
+          </div>
+          <span style="font-size:20px; color:#cbd5e1;">›</span>
+        </div>
+        <div class="portal-footer">
+          <span class="portal-badge" style="background:#f0f9ff; color:#0369a1;">共 24 个在研课题</span>
+          <span style="margin-left:auto; color:#1890ff; font-weight:bold;">进入选择年度 ›</span>
+        </div>
+      </div>
+
+      <div class="portal-card" onclick="enterLeaderPersonnel()">
+        <div class="portal-card-top">
+          <div class="portal-icon-box" style="background:#f0fdf4; color:#16a34a;">👥</div>
+          <div style="flex:1;">
+            <div class="portal-title">项目人员工时明细</div>
+            <div class="portal-desc">按 A-Z 索引查看科研人员跨项目总工时</div>
+          </div>
+          <span style="font-size:20px; color:#cbd5e1;">›</span>
+        </div>
+        <div class="portal-footer">
+          <span class="portal-badge" style="background:#f0fdf4; color:#15803d;">共 53 名科研骨干</span>
+          <span style="margin-left:auto; color:#16a34a; font-weight:bold;">进入工时明细 ›</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="leaderViewProjects" class="content" style="display:none;">
+      <div class="card" style="border-left: 6px solid #1890ff;">
+        <span class="field-label">📅 请选择立项年度：</span>
+        <div class="year-chip-group">
+          <div class="year-chip active" onclick="selectLeaderYear('2024年', this)">2024年</div>
+          <div class="year-chip" onclick="selectLeaderYear('2025年', this)">2025年</div>
+          <div class="year-chip" onclick="selectLeaderYear('2026年', this)">2026年</div>
+        </div>
+      </div>
+      <div id="leaderProjectList"></div>
+    </div>
+
+    <!-- 1.2 客户端：人员列表页 -->
+    <div id="leaderViewPersons" class="content" style="display:none;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 12px;">
+        <p style="font-size: 13px; color: #64748b; margin: 0;">点击人员姓名，统筹其跨项目总工时（人/日）：</p>
+        <button class="btn-sub primary" style="flex:none; padding:6px 12px; font-size:12px; background:#16a34a;" onclick="exportAllPersonnelCSV()">📊 导出全员项目工时汇总表(Excel/CSV)</button>
+      </div>
+      <div id="leaderPersonList"></div>
+    </div>
+
+    <!-- 1.3 项目分配详情页 -->
+    <div id="leaderViewProjectDetail" class="content" style="display:none; padding-bottom: 80px;">
+      <div id="curProjectDash" class="summary-dashboard"></div>
+
+      <div class="card" style="border-left: 5px solid #d97706; background:#fffbeb;">
+        <div style="display:flex; gap:10px;">
+          <div style="flex:1;">
+            <span class="field-label">研发总费用 (万元)</span>
+            <input id="clientProjTotalWan" type="number" class="field-input highlight" placeholder="输入研发总费用" oninput="onClientProjTotalWanInput(this.value)" />
+          </div>
+          <div style="flex:1;">
+            <span class="field-label">项目人工绩效总费用 (万元) [后台配置]</span>
+            <input id="clientProjPerfBudgetWan" type="text" class="field-input" readonly style="background:#f8fafc;" />
+          </div>
+        </div>
+        <div style="font-size:11px; color:#b45309; margin-top:6px;">* 提示：个人绩效占比及工时单价均由管理员后台统一设定，此处输入总费用后自动核算工时。</div>
+      </div>
+
+      <div style="font-size:15px; font-weight:bold; margin: 16px 0 10px 0;">本项目组工时计算结果：</div>
+      <div id="curProjectMemberList"></div>
+      
+      <div style="position:fixed; bottom:0; left:0; right:0; max-width:680px; margin:0 auto; background:#fff; border-top:1px solid #e2e8f0; padding:12px 18px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-size:13px;">累计分配工时: <span id="curProjTotalDays" style="color:#0f766e; font-weight:bold; font-size:16px;">0 天</span></div>
+        </div>
+        <button class="btn-sub primary" style="padding:10px 24px;" onclick="saveAndSyncClient()">确认无误并保存</button>
+      </div>
+    </div>
+
+    <!-- 1.4 客户端：人员跨项目工时明细页 -->
+    <div id="leaderViewPersonDetail" class="content" style="display:none; padding-bottom: 80px;">
+      <div id="curPersonDash" class="summary-dashboard" style="background: linear-gradient(135deg, #0f766e, #0d9488);"></div>
+      <div style="font-size:15px; font-weight:bold; margin: 16px 0 10px 0;">参与项目工时明细：</div>
+      <div id="curPersonProjList"></div>
+
+      <div style="position:fixed; bottom:0; left:0; right:0; max-width:680px; margin:0 auto; background:#fff; border-top:1px solid #e2e8f0; padding:12px 18px; display:flex; justify-content:center; align-items:center;">
+        <button class="btn-sub primary" style="width:100%; padding:12px 0; background:#0f766e; font-size:14px;" onclick="exportClientPersonCSV()">📥 导出个人项目工时Excel(CSV)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 2. 管理员审计端 ==================== -->
+  <div id="pageAdmin" class="page-wrapper" style="display:none;">
+    <div class="mini-header">
+      <div class="header-bar">
+        <span class="header-title">秦洲科研工时台账与后台配置中心</span>
+        <span class="nav-back" onclick="goWelcomePage()" style="font-size:12px; font-weight:normal; color:#64748b;">退出模式</span>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="admin-action-bar">
+        <button class="btn-action warning" onclick="openStandaloneBudgetModal()">💰 项目人工绩效配置</button>
+        <button class="btn-action primary" onclick="openAddProjectModal()">➕ 新增科研项目</button>
+        <button class="btn-action secondary" onclick="openAddMemberModal()">👤 人员及工时价管理</button>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-box">
+          <div class="metric-title">在研科研项目</div>
+          <div id="macroProjCount" class="metric-num">24 个</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-title">人工绩效总预算</div>
+          <div id="macroTotalBudget" class="metric-num">¥995.4万</div>
+        </div>
+        <div class="metric-box">
+          <div class="metric-title">已核算工时天数</div>
+          <div id="macroTotalAllocDays" class="metric-num" style="color:#0f766e;">0 天</div>
+        </div>
+      </div>
+
+      <div class="module-tabs-row">
+        <div id="tabBtnProject" class="module-tab-btn active" onclick="switchAdminTab('project')">📁 项目人工绩效配置</div>
+        <div id="tabBtnPerson" class="module-tab-btn" onclick="switchAdminTab('person')">👥 人员工时台账</div>
+      </div>
+
+      <!-- 2.1 主体板块：项目人工绩效配置 -->
+      <div id="adminModuleProject" class="card">
+        <span class="field-label">选择待配置科研项目：</span>
+        <select id="adminProjSelect" class="select-box" onchange="onAdminProjSelectChange(this.value)"></select>
+
+        <div id="adminProjSummaryBanner" class="summary-banner"></div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>姓名</th>
+                <th>工时价</th>
+                <th class="text-right">工时(天)</th>
+              </tr>
+            </thead>
+            <tbody id="adminProjTableBody"></tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:14px;">
+          <button class="btn-sub secondary" onclick="openPrintModal()">📄 凭单预览</button>
+          <button class="btn-sub primary" onclick="exportProjectCSV()">📥 导出工时Excel(CSV)</button>
+        </div>
+      </div>
+
+      <!-- 2.2 主体板块：人员汇总 -->
+      <div id="adminModulePerson" class="card" style="display:none;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+          <span class="field-label" style="margin:0;">选择项目人员：</span>
+          <div style="display:flex; gap:4px; background:#f1f5f9; padding:2px; border-radius:6px;">
+            <button id="btnModeSelect" style="border:none; background:#fff; padding:3px 10px; border-radius:4px; font-size:12px; font-weight:bold; cursor:pointer;" onclick="switchPersonMode('select')">📋 列表选择</button>
+            <button id="btnModeInput" style="border:none; background:transparent; padding:3px 10px; border-radius:4px; font-size:12px; cursor:pointer;" onclick="switchPersonMode('input')">✍️ 人工输入</button>
+          </div>
+        </div>
+
+        <div id="personSelectWrapper">
+          <select id="adminPersonSelect" class="select-box" onchange="onAdminPersonSelectChange(this.value)"></select>
+        </div>
+
+        <div id="personInputWrapper" style="display:none;">
+          <div style="display:flex; gap:8px;">
+            <input id="adminPersonInput" class="field-input" placeholder="输入姓名，如：李忠良" />
+            <button class="btn-sub primary" style="flex:none; width:80px;" onclick="confirmPersonSearch()">定位</button>
+          </div>
+        </div>
+
+        <div id="adminPersonSummaryBanner" class="summary-banner" style="background:#f0fdf4; border-color:#bbf7d0;"></div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>项目名称</th>
+                <th class="text-right">核定工时(天)</th>
+              </tr>
+            </thead>
+            <tbody id="adminPersonTableBody"></tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:14px;">
+          <button class="btn-sub primary" style="width:100%;" onclick="exportPersonCSV()">📥 导出个人项目工时台账(CSV)</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== 模态弹窗系统 ==================== -->
+  <div id="modalPwd" class="modal-mask">
+    <div class="modal-box" style="max-width:360px;">
+      <div class="modal-header">
+        <span class="modal-title">🔐 管理员模式认证</span>
+        <span class="modal-close" onclick="closeModal('modalPwd')">✕</span>
+      </div>
+      <div class="modal-body" style="text-align:center;">
+        <p style="font-size:13px; color:#64748b; margin-bottom:16px;">请输入管理授权密码进入后台系统：</p>
+        <input id="inputAdminPwd" type="password" maxlength="8" class="field-input" style="text-align:center; font-size:22px; letter-spacing:8px; font-weight:bold;" placeholder="••••" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sub secondary" onclick="closeModal('modalPwd')">取消</button>
+        <button class="btn-sub primary" onclick="checkAdminPassword()">确认验证</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 项目人工绩效配置弹窗 -->
+  <div id="modalBudget" class="modal-mask">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">💰 项目人工绩效配置与成员占比</span>
+        <span class="modal-close" onclick="closeModal('modalBudget')">✕</span>
+      </div>
+      <div class="modal-body">
+        <span class="field-label">1. 请选择立项年度：</span>
+        <div id="modalBudgetYearChips" class="year-chip-group" style="margin-top:0; margin-bottom:12px;">
+          <div class="year-chip" onclick="selectBudgetModalYear('2024年', this)">2024年</div>
+          <div class="year-chip" onclick="selectBudgetModalYear('2025年', this)">2025年</div>
+          <div class="year-chip" onclick="selectBudgetModalYear('2026年', this)">2026年</div>
+        </div>
+
+        <span class="field-label">2. 请选择该年度科研课题：</span>
+        <select id="modalBudgetProjSelect" class="select-box" onchange="onBudgetModalProjChange(this.value)" style="border-color:#d97706; background:#fffbeb;"></select>
+        
+        <div id="modalBudgetInfoBox" style="background:#fafaf9; border:1px solid #e7e5e4; border-radius:8px; padding:12px; margin:12px 0; font-size:13px;"></div>
+
+        <span class="field-label">3. 按研发总费用比例设定 (%)：</span>
+        <div style="position: relative; display: flex; align-items: center; margin-bottom: 8px;">
+          <input id="modalBudgetRatioInput" type="number" step="0.1" class="field-input" 
+                 style="padding-right: 36px; border: 2px solid #d97706; background: #fffbeb; font-weight: bold; color: #b45309;" 
+                 placeholder="默认 20" oninput="onBudgetRatioInput(this.value)" />
+          <span style="position: absolute; right: 12px; font-weight: bold; color: #b45309; font-size: 14px;">%</span>
+        </div>
+
+        <div style="margin-bottom: 14px;">
+          <span class="field-label">项目人工绩效总费用金额 (元)：</span>
+          <input id="modalBudgetAmountInput" type="number" class="field-input highlight" 
+                 style="border:2px solid #d97706; font-size:16px;" placeholder="输入项目人工绩效总费用元" oninput="onBudgetAmountInputChanged(this.value)" />
+        </div>
+
+        <div style="border-top: 1px dashed #cbd5e1; padding-top: 12px;">
+          <span class="field-label" style="color: #b45309;">4. 成员绩效占比 (%) 分配：</span>
+          <div class="table-container" style="max-height: 220px; overflow-y: auto; margin-top: 6px;">
+            <table>
+              <thead>
+                <tr>
+                  <th>姓名</th>
+                  <th>工时价</th>
+                  <th style="width: 110px;">绩效占比(%)</th>
+                  <th class="text-right">绩效金额(元)</th>
+                </tr>
+              </thead>
+              <tbody id="modalBudgetMemberTableBody"></tbody>
+            </table>
+          </div>
+          <div id="modalBudgetPercentSum" style="font-size: 12px; color: #0f766e; margin-top: 6px; font-weight: bold; text-align: right;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sub secondary" onclick="closeModal('modalBudget')">取消</button>
+        <button class="btn-sub primary" style="background:#b45309;" onclick="confirmSaveBudget()">确定保存并同步后台</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalAddProj" class="modal-mask">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">➕ 录入新科研项目</span>
+        <span class="modal-close" onclick="closeModal('modalAddProj')">✕</span>
+      </div>
+      <div class="modal-body">
+        <span class="field-label">项目编号 *</span>
+        <input id="newProjCode" class="field-input" placeholder="如 QZYF-2026020" style="margin-bottom:10px;" />
+        <span class="field-label">项目名称 *</span>
+        <input id="newProjName" class="field-input" placeholder="科研项目全称" style="margin-bottom:10px;" />
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+          <div style="flex:1;">
+            <span class="field-label">立项年度</span>
+            <select id="newProjYear" class="select-box">
+              <option value="2026年">2026年</option>
+              <option value="2025年">2025年</option>
+              <option value="2024年">2024年</option>
+            </select>
+          </div>
+          <div style="flex:1;">
+            <span class="field-label">研发总费用 (万元) *</span>
+            <input id="newProjTotalBudget" type="number" class="field-input" placeholder="如 200" />
+          </div>
+        </div>
+        <div style="display:flex; gap:10px; margin-bottom:10px;">
+          <div style="flex:1;">
+            <span class="field-label">负责人 *</span>
+            <input id="newProjLeader" class="field-input" placeholder="项目负责人" />
+          </div>
+          <div style="flex:1;">
+            <span class="field-label">承担部门</span>
+            <input id="newProjDept" class="field-input" placeholder="所属事业部" />
+          </div>
+        </div>
+        <span class="field-label">成员姓名 (逗号隔开)</span>
+        <input id="newProjMembers" class="field-input" placeholder="如：宋磊, 蒋斌" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sub secondary" onclick="closeModal('modalAddProj')">取消</button>
+        <button class="btn-sub primary" onclick="confirmAddNewProject()">立即录入</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 人员及工时单价数据库管理弹窗 -->
+  <div id="modalAddMember" class="modal-mask">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">👤 人员及工时价数据库管理</span>
+        <span class="modal-close" onclick="closeModal('modalAddMember')">✕</span>
+      </div>
+      <div class="modal-body">
+        <span class="field-label">目标科研项目：</span>
+        <select id="modalAddMemberProjSelect" class="select-box" style="margin-bottom:12px;"></select>
+        <span class="field-label">科研人员姓名 *：</span>
+        <input id="newMemberNameInput" class="field-input" placeholder="输入真实姓名" style="margin-bottom:12px;" />
+        <span class="field-label">固定工时单价 (元/人日) *：</span>
+        <input id="newMemberRateInput" type="number" class="field-input" placeholder="默认 800 元/人日" value="800" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sub secondary" onclick="closeModal('modalAddMember')">取消</button>
+        <button class="btn-sub primary" onclick="confirmAddMember()">添加人员并存入项目</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalPrint" class="modal-mask">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">📄 工时审批单据核对</span>
+        <span class="modal-close" onclick="closeModal('modalPrint')">✕</span>
+      </div>
+      <div class="modal-body">
+        <div style="text-align:center; font-weight:bold; font-size:16px;">陕西秦洲核与辐射安全技术有限公司科研项目工时审批单</div>
+        <div style="font-size:11px; color:#64748b; text-align:center; margin-bottom:14px;">制单日期: 2026-10-26 · 专项审计专用</div>
+        <div id="printVoucherInfo" style="font-size:13px; line-height:1.7; margin-bottom:12px;"></div>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>姓名</th>
+                <th>工时价</th>
+                <th class="text-right">核定工时(天)</th>
+              </tr>
+            </thead>
+            <tbody id="printVoucherTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-sub primary" style="width:100%;" onclick="closeModal('modalPrint')">关闭凭单</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ==================== JavaScript 核心逻辑 ==================== -->
+<script>
+  const PinyinDict = {
+    "常凯文": "C", "陈贰浩": "C", "成晨曦": "C", "丛钰笛": "C",
+    "邓晓彤": "D", "丁瑞祥": "D", "冯冬": "F", "高长宇": "G", "高耀林": "G",
+    "郝建玲": "H", "贺雨桐": "H", "黄鹏": "H", "黄雅心": "H", "蒋斌": "J", "姜丹": "J",
+    "孔祥龙": "K", "李辰": "L", "李青": "L", "李小强": "L", "李垚": "L", "李源": "L", 
+    "李忠良": "L", "梁召秦": "L", "林家骏": "L", "刘沧": "L", "刘莎莎": "L", "刘一臻": "L", 
+    "刘禹": "L", "刘正棋": "L", "陆杰": "L", "吕韩格格": "L", "马博涵": "M", "孟海泉": "M", 
+    "孟令飞": "M", "宁澳迪": "N", "齐梦西": "Q", "屈方园": "Q", "邵柯进": "S", "宋磊": "S",
+    "唐世一": "T", "田原野": "T", "王靛": "W", "王菲": "W", "王昊伟": "W", "王姣姣": "W", 
+    "王皎皎": "W", "王珺": "W", "王强": "W", "温小梅": "W", "文一震": "W", "伍文飞": "W", 
+    "吴磊": "W", "吴思怡": "W", "谢晓东": "X", "杨帆": "Y", "杨魁": "Y", "杨岚": "Y", 
+    "袁方明": "Y", "张良萌": "Z", "张泉": "Z", "张鑫": "Z", "周琪军": "Z"
+  };
+
+  function getLetter(name) {
+    if (!name) return "Z";
+    if (PinyinDict[name]) return PinyinDict[name];
+    return name.charAt(0).toUpperCase();
+  }
+
+  const RawProjects = [
+    { category: "集团", year: "2024年", period: "2024/1/1-2025/12/31", code: "QZYF-2024001", name: "中子剂量探测用CLYC探测器制备", dept: "研发智造事业部", totalBudgetWan: 60, leader: "李忠良", members: ["李忠良","宋磊","王靛","蒋斌","陆杰"] },
+    { category: "内部", year: "2024年", period: "2024/6/1-2026/12/31", code: "QZYF-2024005", name: "人员出入管理箱研发", dept: "研发智造事业部", totalBudgetWan: 80, leader: "吴磊", members: ["吴磊","李忠良","梁召秦","屈方园","王昊伟","林家骏"] },
+    { category: "省科技厅", year: "2024年", period: "2024/11/1-2026/12/31", code: "QZYF-2024008", name: "基于快速图结构检索增强生成技术的智能体研发", dept: "研发智造事业部", totalBudgetWan: 300, leader: "李忠良", members: ["李忠良","张鑫","李源","温小梅","伍文飞","邵柯进","常凯文","王强","刘一臻","邓晓彤"] },
+    { category: "省科技厅", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025001", name: "VR LEB大空间技术研发/中国“核”心沉浸式体验项目", dept: "科数应用事业部", totalBudgetWan: 120, leader: "孔祥龙", members: ["孔祥龙","袁方明","唐世一","田原野","常凯文","杨帆","贺雨桐","李垚"] },
+    { category: "内部", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025002", name: "便携式核素识别仪研发", dept: "研发智造事业部", totalBudgetWan: 80, leader: "吴磊", members: ["吴磊","屈方园","王昊伟","梁召秦","林家骏","周琪军","吕韩格格"] },
+    { category: "集团", year: "2025年", period: "2025/1/1-2027/6/30", code: "QZYF-2025003", name: "国控大气辐射环境自动监测站核心部件研发及成套系统产业化", dept: "研发智造事业部", totalBudgetWan: 300, leader: "李忠良", members: ["李忠良","杨魁","李小强","吴磊","林家骏","周琪军","屈方园","成晨曦","王昊伟","吕韩格格","刘一臻"] },
+    { category: "内部", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025004", name: "核电智能检维修场景扩展应用研发项目", dept: "深圳分公司", totalBudgetWan: 200, leader: "孟海泉", members: ["孟海泉","刘禹","黄鹏","谢晓东","孟令飞","高耀林","李辰","张良萌","郝建玲"] },
+    { category: "省科技厅", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025005", name: "面向无损检测应用的移动中子成像系统关键技术研究", dept: "科数应用事业部", totalBudgetWan: 200, leader: "温小梅", members: ["温小梅","李忠良","刘禹","刘沧","冯冬","文一震","常凯文","刘一臻","周琪军","屈方园","李小强"] },
+    { category: "市科技局", year: "2025年", period: "2025/1/1-2027/12/31", code: "QZYF-2025006", name: "超稳定高容量中性水系有机液流电池的关键材料开发及产业化", dept: "研发智造事业部", totalBudgetWan: 30, leader: "李忠良", members: ["李忠良","温小梅","周琪军","屈方园","常凯文","刘一臻"] },
+    { category: "内部", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025007", name: "基于碲锌镉的高分辨γ谱仪前端模块开发", dept: "市场营销事业部", totalBudgetWan: 200, leader: "刘正棋", members: ["刘正棋","刘沧","丛钰笛","张泉"] },
+    { category: "内部", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025008", name: "基于碲锌镉的康普顿谱仪前端模块开发", dept: "市场营销事业部", totalBudgetWan: 200, leader: "张泉", members: ["张泉","杨魁","刘沧","刘正棋","丛钰笛"] },
+    { category: "内部", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025009", name: "基于深度学习的涉核工程图纸智能识别系统关键算法研发", dept: "安全环保部", totalBudgetWan: 100, leader: "刘莎莎", members: ["刘莎莎","刘沧","丁瑞祥"] },
+    { category: "内部", year: "2025年", period: "2025/1/1-2026/12/31", code: "QZYF-2025010", name: "基于AI视频分析的核电智慧机房数字孪生运行管理平台算法研发", dept: "安全环保部", totalBudgetWan: 100, leader: "孟令飞", members: ["孟令飞","刘禹","刘沧","谢晓东","李辰","王姣姣"] },
+    { category: "国防科工局", year: "2025年", period: "2025/07/01-2029/12/31", code: "QZYF-2025011", name: "基于切伦科夫效应的伽马能谱仪", dept: "四川分公司", totalBudgetWan: 470, leader: "李忠良", members: ["李忠良","杨魁","刘沧","周琪军"] },
+    { category: "内部", year: "2026年", period: "2026/01/01-2027/12/31", code: "QZYF-2026001", name: "全自动超大流量气溶胶采样器研发", dept: "研发智造事业部", totalBudgetWan: 350, leader: "李忠良", members: ["李忠良","李小强","吴磊","林家骏","周琪军","屈方园","王珺","梁召秦","陈贰浩","成晨曦","王昊伟","吕韩格格"] },
+    { category: "内部", year: "2026年", period: "2026/01/01-2027/12/31", code: "QZYF-2026002", name: "核电厂环境辐射监测系统关键设备研制", dept: "研发智造事业部", totalBudgetWan: 150, leader: "李小强", members: ["李小强","李忠良","吴磊","林家骏","周琪军","屈方园","成晨曦","王昊伟","吕韩格格"] },
+    { category: "内部", year: "2026年", period: "2026/01/01-2027/12/31", code: "QZYF-2026003", name: "智能化电磁辐射在线自动监测系统研发", dept: "研发智造事业部", totalBudgetWan: 220, leader: "李小强", members: ["李小强","文一震","吴磊","周琪军","屈方园","林家骏","王昊伟","梁召秦","宁澳迪","王珺","吕韩格格"] },
+    { category: "内部", year: "2026年", period: "2026/01/01-2027/12/31", code: "QZYF-2026004", name: "辐射环境检测实验室信息化管理系统开发", dept: "辐射检测事业部", totalBudgetWan: 115, leader: "孟令飞", members: ["孟令飞","刘禹","刘沧","刘莎莎","王皎皎"] },
+    { category: "内部", year: "2026年", period: "2026/01/01-2027/12/31", code: "QZYF-2026005", name: "放射性废液流出物低能耗分层净化柱除氚小型样机研发", dept: "中陕核现代物理科技", totalBudgetWan: 140, leader: "李青", members: ["李青","张鑫","邵柯进","黄雅心","邓晓彤"] },
+    { category: "内部", year: "2026年", period: "2026/01/01-2027/12/31", code: "QZYF-2026006", name: "便携式氚监测仪关键设备研发", dept: "市场营销事业部", totalBudgetWan: 100, leader: "刘正棋", members: ["刘正棋","杨魁","刘禹","温小梅","蒋斌","姜丹","丛钰笛","刘一臻","马博涵","张泉","杨岚","高长宇"] },
+    { category: "集团", year: "2026年", period: "2026/01/01-2027/12/31", code: "QZYF-2026007", name: "常温流出物氪-85自动分离测量一体化系统研究", dept: "研发智造事业部", totalBudgetWan: 280, leader: "杨魁", members: ["杨魁","周琪军","吴磊","姜丹","吴思怡"] },
+    { category: "省科技厅", year: "2026年", period: "2026/08/01-2028/7/31", code: "QZYF-2026008", name: "智能化柔性核应急防护服机理研究队伍", dept: "市场营销事业部", totalBudgetWan: 180, leader: "刘沧", members: ["刘沧","李忠良","温小梅","姜丹","冯冬","文一震","周琪军","屈方园","李小强","刘一臻"] },
+    { category: "省科技厅", year: "2026年", period: "2026/08/01-2027/7/31", code: "QZYF-2026009", name: "高分辨国产CZT康普顿γ谱仪研发", dept: "科数应用事业部", totalBudgetWan: 1000, leader: "温小梅", members: ["温小梅","杨魁","李忠良","刘沧","刘禹","姜丹","刘正棋","孟令飞","谢晓东","刘莎莎","杨岚","王菲","孔祥龙","张泉","刘一臻","李小强","周琪军","林家骏","吴磊","屈方园","吴思怡","齐梦西"] },
+    { category: "省科协", year: "2026年", period: "2027/01/01-2028/12/31", code: "QZYF-2026010", name: "基于NaI(Tl)闪烁体与钙钛矿新型叠层X射线探测器研究", dept: "科数应用事业部", totalBudgetWan: 2, leader: "吴思怡", members: ["吴思怡","温小梅","姜丹","刘一臻"] }
+  ];
+
+  let state = {
+    globalRole: 'welcome',
+    leaderNav: 'portal',
+    projects: [],
+    personnel: [],
+    projectMembers: {},
+    allocations: {}, 
+    selectedYear: '2024年',
+    curProjectId: null,
+    curPersonId: null,
+    adminTab: 'project',
+    adminPersonMode: 'select',
+    budgetTargetId: null,
+    budgetModalYear: '2024年'
+  };
+
+  function initData() {
+    const savedProjects = localStorage.getItem('qz_projects_data_v8');
+    const savedAllocations = localStorage.getItem('qz_allocations_data_v8');
+    const savedMembers = localStorage.getItem('qz_project_members_data_v8');
+    const savedPersonnel = localStorage.getItem('qz_personnel_data_v8');
+
+    if (savedProjects) {
+      state.projects = JSON.parse(savedProjects);
+    } else {
+      state.projects = RawProjects.map(p => {
+        const defaultPerfBudget = Math.round(p.totalBudgetWan * 10000 * 0.20);
+        return {
+          id: p.code,
+          code: p.code,
+          name: p.name,
+          category: p.category,
+          year: p.year,
+          period: p.period,
+          dept: p.dept,
+          totalBudgetWan: p.totalBudgetWan,
+          budget: defaultPerfBudget,
+          leader: p.leader
+        };
+      });
+    }
+
+    if (savedMembers) {
+      state.projectMembers = JSON.parse(savedMembers);
+    } else {
+      RawProjects.forEach(p => {
+        state.projectMembers[p.code] = p.members.map(m => "U_" + m.trim());
+      });
+    }
+
+    if (savedPersonnel) {
+      state.personnel = JSON.parse(savedPersonnel);
+    } else {
+      const pSet = new Set();
+      RawProjects.forEach(p => {
+        p.members.forEach(m => pSet.add(m.trim()));
+        if (p.leader) pSet.add(p.leader.trim());
+      });
+      state.personnel = Array.from(pSet).map(name => ({
+        id: "U_" + name,
+        name: name,
+        rate: 800,
+        letter: getLetter(name)
+      })).sort((a,b) => a.letter.localeCompare(b.letter));
+    }
+
+    if (savedAllocations) {
+      state.allocations = JSON.parse(savedAllocations);
+    } else {
+      RawProjects.forEach(p => {
+        const mList = p.members;
+        const defaultPct = Number((100 / mList.length).toFixed(2));
+        mList.forEach(m => {
+          state.allocations[`${p.code}_U_${m}`] = { percent: defaultPct, task: "科研攻关" };
+        });
+      });
+    }
+
+    state.budgetTargetId = state.projects[0].id;
+    updateMacroData();
+  }
+
+  function goWelcomePage() {
+    state.globalRole = 'welcome';
+    document.getElementById('globalRoleBar').style.display = 'none';
+    document.getElementById('pageWelcome').style.display = 'flex';
+    document.getElementById('pageLeader').style.display = 'none';
+    document.getElementById('pageAdmin').style.display = 'none';
+    document.getElementById('clientRoleBadge').style.display = 'none';
+    document.getElementById('btnExitAdmin').style.display = 'none';
+  }
+
+  function enterClientRole() {
+    state.globalRole = 'leader';
+    document.getElementById('globalRoleBar').style.display = 'flex';
+    document.getElementById('pageWelcome').style.display = 'none';
+    document.getElementById('pageLeader').style.display = 'block';
+    document.getElementById('pageAdmin').style.display = 'none';
+    document.getElementById('clientRoleBadge').style.display = 'inline-block';
+    document.getElementById('btnExitAdmin').style.display = 'none';
+    setLeaderView('portal', '项目工时核配');
+  }
+
+  function setLeaderView(viewName, title = '项目工时核配') {
+    state.leaderNav = viewName;
+    document.getElementById('leaderHeaderTitle').innerText = title;
+    document.getElementById('leaderNavBack').style.display = (viewName === 'portal') ? 'none' : 'inline';
+
+    ['leaderViewPortal', 'leaderViewProjects', 'leaderViewPersons', 'leaderViewProjectDetail', 'leaderViewPersonDetail'].forEach(id => {
+      document.getElementById(id).style.display = 'none';
+    });
+
+    if (viewName === 'portal') document.getElementById('leaderViewPortal').style.display = 'block';
+    if (viewName === 'projects') {
+      document.getElementById('leaderViewProjects').style.display = 'block';
+      renderLeaderProjects();
+    }
+    if (viewName === 'persons') {
+      document.getElementById('leaderViewPersons').style.display = 'block';
+      renderLeaderPersonnel();
+    }
+    if (viewName === 'project-detail') {
+      document.getElementById('leaderViewProjectDetail').style.display = 'block';
+      renderLeaderProjectDetail();
+    }
+    if (viewName === 'person-detail') {
+      document.getElementById('leaderViewPersonDetail').style.display = 'block';
+      renderLeaderPersonDetail();
+    }
+  }
+
+  function goLeaderBack() {
+    if (state.leaderNav === 'project-detail') enterLeaderProjects();
+    else if (state.leaderNav === 'person-detail') enterLeaderPersonnel();
+    else setLeaderView('portal', '项目工时核配');
+  }
+
+  function enterLeaderProjects() { setLeaderView('projects', '在研科研项目'); }
+  function enterLeaderPersonnel() { setLeaderView('persons', '项目人员工时明细'); }
+
+  function selectLeaderYear(year, el) {
+    state.selectedYear = year;
+    document.querySelectorAll('.year-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    renderLeaderProjects();
+  }
+
+  function renderLeaderProjects() {
+    const list = state.projects.filter(p => p.year === state.selectedYear);
+    const box = document.getElementById('leaderProjectList');
+    box.innerHTML = `<div style="font-size:12px; color:#64748b; margin-bottom:10px;">已按【${state.selectedYear}立项】分类，共 ${list.length} 项：</div>`;
+    
+    list.forEach(p => {
+      let totalDays = 0;
+      (state.projectMembers[p.id] || []).forEach(uid => {
+        const al = state.allocations[`${p.id}_${uid}`] || { percent: 0 };
+        const pct = parseFloat(al.percent) || 0;
+        const amt = Math.round(p.budget * (pct / 100));
+        const u = state.personnel.find(x => x.id === uid) || { rate: 800 };
+        totalDays += parseFloat((amt / (u.rate || 800)).toFixed(1));
+      });
+
+      const budgetWan = (p.budget / 10000).toFixed(1);
+
+      box.innerHTML += `
+        <div class="card clickable-card" onclick="openProjectDetail('${p.id}')">
+          <div style="flex:1;">
+            <div class="tag-row">
+              <span class="tag tag-category">${p.category}</span>
+              <span class="tag tag-year">${p.year}</span>
+              <span class="tag tag-dept">${p.dept}</span>
+              <span class="tag tag-leader">负责人: ${p.leader}</span>
+            </div>
+            <div style="font-weight:bold; font-size:15px; margin-bottom:4px;">${p.name}</div>
+            <div style="font-size:12px; color:#64748b; margin-bottom:8px;">研发总费用: <strong>¥${p.totalBudgetWan}万</strong> | 项目人工绩效总费用: <strong>¥${budgetWan}万</strong></div>
+            <div style="display:flex; justify-content:space-between; font-size:13px; border-top:1px dashed #e2e8f0; padding-top:8px;">
+              <span>核算团队总工时: <strong style="color:#0369a1;">${totalDays.toFixed(1)} 人/日</strong></span>
+              <span style="font-weight:bold; color:#059669;">管理状态: 已后台配置</span>
+            </div>
+          </div>
+          <span style="font-size:22px; color:#cbd5e1; margin-left:12px;">›</span>
+        </div>
+      `;
+    });
+  }
+
+  function renderLeaderPersonnel() {
+    const box = document.getElementById('leaderPersonList');
+    box.innerHTML = '';
+    let lastLetter = '';
+    state.personnel.forEach(u => {
+      if (u.letter !== lastLetter) {
+        box.innerHTML += `<div class="letter-group-title">${u.letter}</div>`;
+        lastLetter = u.letter;
+      }
+      let count = 0;
+      let totalDays = 0;
+      state.projects.forEach(p => {
+        if ((state.projectMembers[p.id] || []).includes(u.id)) {
+          count++;
+          const al = state.allocations[`${p.id}_${u.id}`] || { percent: 0 };
+          const pct = parseFloat(al.percent) || 0;
+          const amt = Math.round(p.budget * (pct / 100));
+          totalDays += parseFloat((amt / (u.rate || 800)).toFixed(1));
+        }
+      });
+      box.innerHTML += `
+        <div class="card clickable-card" onclick="openPersonDetail('${u.id}')">
+          <div>
+            <span style="font-weight:bold; font-size:15px;">${u.name}</span>
+            <span style="font-size:11px; background:#f1f5f9; padding:2px 6px; border-radius:4px; margin-left:6px; color:#64748b;">单价: ${u.rate||800}元/天</span>
+            <span style="font-size:11px; background:#e0f2fe; padding:2px 6px; border-radius:4px; margin-left:4px; color:#0369a1;">参与${count}个项目</span>
+          </div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <span style="color:#0f766e; font-weight:bold; font-size:14px;">${totalDays.toFixed(1)} 人/日</span>
+            <span style="font-size:20px; color:#cbd5e1;">›</span>
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  /* 导出所有项目人员跨项目工时汇总 Excel(CSV) —— 已移除详细项目分布列 */
+  function exportAllPersonnelCSV() {
+    if (!state.personnel || state.personnel.length === 0) {
+      return alert('暂无人员数据！');
+    }
+
+    let csv = '\uFEFF';
+    csv += `陕西秦洲核与辐射安全技术有限公司 - 科研人员跨项目工时总汇总表\n`;
+    csv += `导出日期: 2026-10-27\n\n`;
+    csv += `序号,人员姓名,工时单价(元/天),参与课题数量,跨项目累计总工时(人/日)\n`;
+
+    state.personnel.forEach((u, index) => {
+      let count = 0;
+      let totalDays = 0;
+
+      state.projects.forEach(p => {
+        if ((state.projectMembers[p.id] || []).includes(u.id)) {
+          count++;
+          const al = state.allocations[`${p.id}_${u.id}`] || { percent: 0 };
+          const pct = parseFloat(al.percent) || 0;
+          const amt = Math.round(p.budget * (pct / 100));
+          const days = amt / (u.rate || 800);
+          totalDays += days;
+        }
+      });
+
+      csv += `"${index + 1}","${u.name}","${u.rate || 800}","${count}","${totalDays.toFixed(1)}"\n`;
+    });
+
+    downloadCSV(csv, `陕西秦洲_全员科研项目工时汇总表.csv`);
+  }
+
+  function openProjectDetail(pid) {
+    state.curProjectId = pid;
+    setLeaderView('project-detail', '项目工时核配');
+  }
+
+  function renderLeaderProjectDetail() {
+    const p = state.projects.find(x => x.id === state.curProjectId);
+    const mIds = state.projectMembers[p.id] || [];
+
+    document.getElementById('clientProjTotalWan').value = p.totalBudgetWan;
+    document.getElementById('clientProjPerfBudgetWan').value = (p.budget / 10000).toFixed(1) + ' 万';
+
+    let totalDays = 0;
+
+    mIds.forEach(uid => {
+      const al = state.allocations[`${p.id}_${uid}`] || { percent: 0 };
+      const pct = parseFloat(al.percent) || 0;
+      const amt = Math.round(p.budget * (pct / 100));
+      const u = state.personnel.find(x => x.id === uid) || { rate: 800 };
+      totalDays += parseFloat((amt / (u.rate || 800)).toFixed(1));
+    });
+
+    document.getElementById('curProjectDash').innerHTML = `
+      <div style="display:flex; justify-content:space-between; font-size:12px;">
+        <span class="tag" style="background:rgba(255,255,255,0.25); color:#fff;">${p.category}</span>
+        <span style="opacity:0.8;">${p.code}</span>
+      </div>
+      <div class="dash-title">${p.name}</div>
+      <div style="font-size:12px; opacity:0.9;">周期: ${p.period} | 负责人: ${p.leader}</div>
+      <div class="progress-bar-bg">
+        <div class="progress-bar-fill" style="width:100%;"></div>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:12px;">
+        <span>项目人工绩效总费用: ¥${(p.budget/10000).toFixed(1)}万</span>
+        <span>核算总工时: <strong>${totalDays.toFixed(1)} 天</strong></span>
+      </div>
+    `;
+
+    document.getElementById('curProjTotalDays').innerText = totalDays.toFixed(1) + ' 天';
+
+    const memberBox = document.getElementById('curProjectMemberList');
+    memberBox.innerHTML = '';
+    mIds.forEach(uid => {
+      const u = state.personnel.find(x => x.id === uid) || { name: '未知', rate: 800 };
+      const al = state.allocations[`${p.id}_${uid}`] || { percent: 0 };
+      const pct = parseFloat(al.percent) || 0;
+      const amt = Math.round(p.budget * (pct / 100));
+      const days = parseFloat((amt / (u.rate || 800)).toFixed(1));
+      const isLeader = (u.name === p.leader);
+
+      memberBox.innerHTML += `
+        <div class="card" style="border-left: 5px solid #1890ff; padding: 12px 14px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <div>
+              <span style="font-weight:bold; font-size:14px;">👤 ${u.name}</span>
+              <span style="font-size:11px; color:#64748b; margin-left:6px;">[工时单价: ${u.rate||800}元/天]</span>
+            </div>
+            <span class="role-tag ${isLeader?'leader':''}">${isLeader?'项目负责人':'成员'}</span>
+          </div>
+          <div>
+            <span class="field-label">客户端自动计算工时 (人/日)</span>
+            <input type="text" class="field-input highlight" value="${days.toFixed(1)} 天" readonly style="background:#f0fdfa; font-size:16px;" />
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function onClientProjTotalWanInput(val) {
+    const p = state.projects.find(x => x.id === state.curProjectId);
+    if (!p) return;
+    const wan = parseFloat(val) || 0;
+    p.totalBudgetWan = wan;
+    const autoPerf = Math.round(wan * 10000 * 0.20); 
+    p.budget = autoPerf;
+    document.getElementById('clientProjPerfBudgetWan').value = (autoPerf / 10000).toFixed(1) + ' 万';
+    localStorage.setItem('qz_projects_data_v8', JSON.stringify(state.projects));
+    renderLeaderProjectDetail();
+  }
+
+  function saveAndSyncClient() {
+    localStorage.setItem('qz_projects_data_v8', JSON.stringify(state.projects));
+    updateMacroData();
+    alert('✓ 客户端研发总费用与自动工时计算结果已确认并保存！');
+  }
+
+  function openPersonDetail(uid) {
+    state.curPersonId = uid;
+    setLeaderView('person-detail', '人员跨项目工时');
+  }
+
+  function renderLeaderPersonDetail() {
+    const u = state.personnel.find(x => x.id === state.curPersonId);
+    let totalDays = 0;
+    const joinedProjs = [];
+
+    state.projects.forEach(p => {
+      if ((state.projectMembers[p.id] || []).includes(u.id)) {
+        const al = state.allocations[`${p.id}_${u.id}`] || { percent: 0 };
+        const pct = parseFloat(al.percent) || 0;
+        const amt = Math.round(p.budget * (pct / 100));
+        const days = parseFloat((amt / (u.rate || 800)).toFixed(1));
+        totalDays += days;
+        joinedProjs.push({ ...p, days });
+      }
+    });
+
+    document.getElementById('curPersonDash').innerHTML = `
+      <div style="display:flex; justify-content:space-between; font-size:12px;">
+        <span class="tag" style="background:rgba(255,255,255,0.25); color:#fff;">秦洲科研人员</span>
+        <span>固定工时价: [${u.rate||800}元/天]</span>
+      </div>
+      <div class="dash-title">${u.name}</div>
+      <div style="display:flex; justify-content:space-between; font-size:12px; margin-top:10px;">
+        <span>参与在研课题: ${joinedProjs.length} 个</span>
+        <span style="font-weight:bold;">累计工时: ${totalDays.toFixed(1)} 人/日</span>
+      </div>
+    `;
+
+    const box = document.getElementById('curPersonProjList');
+    box.innerHTML = '';
+    joinedProjs.forEach(item => {
+      box.innerHTML += `
+        <div class="card" style="border-left:5px solid #0f766e;">
+          <div style="font-weight:bold; font-size:14px; margin-bottom:4px;">📁 ${item.name}</div>
+          <div style="font-size:11px; background:#e0f2fe; color:#0369a1; padding:4px 8px; border-radius:4px; margin-bottom:8px;">
+            [${item.category}] 项目研发费用: ¥${item.totalBudgetWan}万
+          </div>
+          <div>
+            <span class="field-label">核算工时 (天)</span>
+            <input type="text" class="field-input highlight" value="${item.days.toFixed(1)} 天" readonly style="background:#f0fdfa;" />
+          </div>
+        </div>
+      `;
+    });
+  }
+
+  function exportClientPersonCSV() {
+    const u = state.personnel.find(x => x.id === state.curPersonId);
+    if (!u) return alert('人员信息有误');
+
+    let csv = '\uFEFF';
+    csv += `科研人员姓名,${u.name}\n固定工时单价(元/天),${u.rate||800}\n\n`;
+    csv += `序号,项目编号,项目全称,项目类别,核定工时(天)\n`;
+
+    let totalDays = 0;
+    let idx = 1;
+    state.projects.forEach(p => {
+      if ((state.projectMembers[p.id] || []).includes(u.id)) {
+        const al = state.allocations[`${p.id}_${u.id}`] || { percent: 0 };
+        const pct = parseFloat(al.percent) || 0;
+        const amt = Math.round(p.budget * (pct / 100));
+        const days = amt / (u.rate || 800);
+        totalDays += days;
+        csv += `"${idx++}","${p.code}","${p.name}","${p.category}","${days.toFixed(1)}"\n`;
+      }
+    });
+    csv += `合计,"-","-","-","${totalDays.toFixed(1)}"\n`;
+
+    downloadCSV(csv, `个人项目工时明细表_${u.name}.csv`);
+  }
+
+  function openPasswordModal() {
+    document.getElementById('inputAdminPwd').value = '';
+    openModal('modalPwd');
+  }
+
+  function checkAdminPassword() {
+    const pwd = document.getElementById('inputAdminPwd').value.trim();
+    if (pwd === '8888') {
+      state.globalRole = 'admin';
+      closeModal('modalPwd');
+      document.getElementById('globalRoleBar').style.display = 'flex';
+      document.getElementById('pageWelcome').style.display = 'none';
+      document.getElementById('pageLeader').style.display = 'none';
+      document.getElementById('pageAdmin').style.display = 'block';
+      document.getElementById('clientRoleBadge').style.display = 'none';
+      document.getElementById('btnExitAdmin').style.display = 'inline-block';
+      refreshAdminData();
+    } else {
+      alert('密码错误！无权进入管理员端。');
+    }
+  }
+
+  function updateMacroData() {
+    let totalPerf = 0;
+    state.projects.forEach(p => { totalPerf += p.budget; });
+
+    let totalDays = 0;
+    state.projects.forEach(p => {
+      (state.projectMembers[p.id] || []).forEach(uid => {
+        const al = state.allocations[`${p.id}_${uid}`] || { percent: 0 };
+        const pct = parseFloat(al.percent) || 0;
+        const amt = Math.round(p.budget * (pct / 100));
+        const u = state.personnel.find(x => x.id === uid) || { rate: 800 };
+        totalDays += (amt / (u.rate || 800));
+      });
+    });
+
+    document.getElementById('macroProjCount').innerText = `${state.projects.length} 个`;
+    document.getElementById('macroTotalBudget').innerText = `¥${(totalPerf/10000).toFixed(1)}万`;
+    document.getElementById('macroTotalAllocDays').innerText = `${totalDays.toFixed(1)} 天`;
+  }
+
+  function refreshAdminData() {
+    updateMacroData();
+
+    const pSelect = document.getElementById('adminProjSelect');
+    pSelect.innerHTML = '';
+    state.projects.forEach(p => {
+      pSelect.innerHTML += `<option value="${p.id}">[${p.year}] ${p.code} - ${p.name}</option>`;
+    });
+
+    const uSelect = document.getElementById('adminPersonSelect');
+    uSelect.innerHTML = '';
+    state.personnel.forEach(u => {
+      uSelect.innerHTML += `<option value="${u.id}">[${u.letter}] ${u.name}</option>`;
+    });
+
+    onAdminProjSelectChange(pSelect.value);
+    onAdminPersonSelectChange(uSelect.value);
+  }
+
+  function switchAdminTab(tab) {
+    state.adminTab = tab;
+    if (tab === 'project') {
+      document.getElementById('tabBtnProject').classList.add('active');
+      document.getElementById('tabBtnPerson').classList.remove('active');
+      document.getElementById('adminModuleProject').style.display = 'block';
+      document.getElementById('adminModulePerson').style.display = 'none';
+    } else {
+      document.getElementById('tabBtnProject').classList.remove('active');
+      document.getElementById('tabBtnPerson').classList.add('active');
+      document.getElementById('adminModuleProject').style.display = 'none';
+      document.getElementById('adminModulePerson').style.display = 'block';
+    }
+  }
+
+  function onAdminProjSelectChange(pid) {
+    const p = state.projects.find(x => x.id === pid);
+    if (!p) return;
+    const mIds = state.projectMembers[p.id] || [];
+    const budgetWan = (p.budget / 10000).toFixed(1);
+
+    document.getElementById('adminProjSummaryBanner').innerHTML = `
+      <div style="font-weight:bold; font-size:15px; color:#0f766e;">${p.name}</div>
+      <div style="font-size:12px; color:#475569; margin:4px 0;">[${p.category}] ${p.code} | 部门: ${p.dept} | 负责人: ${p.leader}</div>
+      <div style="font-size:13px; font-weight:bold;">
+        <span>研发总费用: ¥${p.totalBudgetWan}万 | <span style="color:#d97706;">项目人工绩效总费用: ¥${budgetWan}万</span></span>
+      </div>
+    `;
+
+    const tbody = document.getElementById('adminProjTableBody');
+    tbody.innerHTML = '';
+    mIds.forEach(uid => {
+      const u = state.personnel.find(x => x.id === uid) || { name: '未知', rate: 800 };
+      const alKey = `${p.id}_${uid}`;
+      if (!state.allocations[alKey]) {
+        state.allocations[alKey] = { percent: (100 / mIds.length).toFixed(2), task: '科研攻关' };
+      }
+      const al = state.allocations[alKey];
+      const pct = parseFloat(al.percent) || 0;
+      const amt = Math.round(p.budget * (pct / 100));
+      const days = (amt / (u.rate || 800)).toFixed(1);
+
+      tbody.innerHTML += `
+        <tr>
+          <td style="font-weight:bold;">${u.name}</td>
+          <td>${u.rate||800}元/天</td>
+          <td class="text-right" style="color:#0f766e; font-weight:bold;">${days} 天</td>
+        </tr>
+      `;
+    });
+  }
+
+  function switchPersonMode(mode) {
+    state.adminPersonMode = mode;
+    if (mode === 'select') {
+      document.getElementById('btnModeSelect').style.background = '#fff';
+      document.getElementById('btnModeSelect').style.fontWeight = 'bold';
+      document.getElementById('btnModeInput').style.background = 'transparent';
+      document.getElementById('btnModeInput').style.fontWeight = 'normal';
+      document.getElementById('personSelectWrapper').style.display = 'block';
+      document.getElementById('personInputWrapper').style.display = 'none';
+    } else {
+      document.getElementById('btnModeInput').style.background = '#fff';
+      document.getElementById('btnModeInput').style.fontWeight = 'bold';
+      document.getElementById('btnModeSelect').style.background = 'transparent';
+      document.getElementById('btnModeSelect').style.fontWeight = 'normal';
+      document.getElementById('personSelectWrapper').style.display = 'none';
+      document.getElementById('personInputWrapper').style.display = 'block';
+    }
+  }
+
+  function confirmPersonSearch() {
+    const name = document.getElementById('adminPersonInput').value.trim();
+    if (!name) return alert('请输入姓名！');
+    const u = state.personnel.find(x => x.name === name);
+    if (u) {
+      document.getElementById('adminPersonSelect').value = u.id;
+      onAdminPersonSelectChange(u.id);
+      alert(`已定位【${name}】！`);
+    } else {
+      alert(`系统中暂无【${name}】的记录。`);
+    }
+  }
+
+  function onAdminPersonSelectChange(uid) {
+    const u = state.personnel.find(x => x.id === uid);
+    if (!u) return;
+
+    let totalDays = 0;
+    const projs = [];
+    state.projects.forEach(p => {
+      if ((state.projectMembers[p.id] || []).includes(u.id)) {
+        const al = state.allocations[`${p.id}_${u.id}`] || { percent: 0 };
+        const pct = parseFloat(al.percent) || 0;
+        const amt = Math.round(p.budget * (pct / 100));
+        const days = amt / (u.rate || 800);
+        totalDays += days;
+        projs.push({ name: p.name, days });
+      }
+    });
+
+    document.getElementById('adminPersonSummaryBanner').innerHTML = `
+      <div style="font-weight:bold; font-size:15px; color:#166534;">${u.name} <span style="font-size:12px; font-weight:normal;">(工时单价数据库: ${u.rate||800}元/人日)</span></div>
+      <div style="display:flex; justify-content:space-between; font-size:13px; margin-top:4px;">
+        <span>参与课题数: ${projs.length} 个</span>
+        <span style="color:#0f766e; font-weight:bold;">跨项目累计工时: ${totalDays.toFixed(1)} 天</span>
+      </div>
+    `;
+
+    const tbody = document.getElementById('adminPersonTableBody');
+    tbody.innerHTML = '';
+    projs.forEach(p => {
+      tbody.innerHTML += `
+        <tr>
+          <td>${p.name}</td>
+          <td class="text-right" style="font-weight:bold; color:#0f766e;">${p.days.toFixed(1)} 天</td>
+        </tr>
+      `;
+    });
+  }
+
+  function openStandaloneBudgetModal() {
+    let p = state.projects.find(x => x.id === state.budgetTargetId) || state.projects[0];
+    state.budgetTargetId = p.id;
+    state.budgetModalYear = p.year || '2024年';
+
+    updateBudgetModalYearChips();
+    populateBudgetModalProjects();
+    openModal('modalBudget');
+  }
+
+  function selectBudgetModalYear(year, el) {
+    state.budgetModalYear = year;
+    updateBudgetModalYearChips();
+    populateBudgetModalProjects();
+  }
+
+  function updateBudgetModalYearChips() {
+    const chips = document.querySelectorAll('#modalBudgetYearChips .year-chip');
+    chips.forEach(c => {
+      if (c.innerText.trim() === state.budgetModalYear) {
+        c.classList.add('active');
+        c.style.borderColor = '#d97706';
+        c.style.color = '#b45309';
+        c.style.background = '#fff7ed';
+      } else {
+        c.classList.remove('active');
+        c.style.borderColor = '#e2e8f0';
+        c.style.color = '#475569';
+        c.style.background = '#f1f5f9';
+      }
+    });
+  }
+
+  function populateBudgetModalProjects() {
+    const yearProjects = state.projects.filter(p => p.year === state.budgetModalYear);
+    const sel = document.getElementById('modalBudgetProjSelect');
+    sel.innerHTML = '';
+
+    if (yearProjects.length === 0) {
+      sel.innerHTML = '<option value="">(该年度暂无课题)</option>';
+      document.getElementById('modalBudgetInfoBox').innerHTML = '暂无课题信息';
+      document.getElementById('modalBudgetAmountInput').value = '';
+      document.getElementById('modalBudgetMemberTableBody').innerHTML = '';
+      return;
+    }
+
+    yearProjects.forEach(p => {
+      sel.innerHTML += `<option value="${p.id}" ${p.id === state.budgetTargetId ? 'selected' : ''}>${p.code} - ${p.name}</option>`;
+    });
+
+    if (!yearProjects.some(p => p.id === state.budgetTargetId)) {
+      state.budgetTargetId = yearProjects[0].id;
+      sel.value = state.budgetTargetId;
+    } else {
+      sel.value = state.budgetTargetId;
+    }
+
+    onBudgetModalProjChange(state.budgetTargetId);
+  }
+
+  function onBudgetModalProjChange(pid) {
+    if (!pid) return;
+    state.budgetTargetId = pid;
+    const p = state.projects.find(x => x.id === pid);
+    if (!p) return;
+
+    document.getElementById('modalBudgetInfoBox').innerHTML = `
+      <div><strong>项目全称：</strong>${p.name}</div>
+      <div style="margin:4px 0;"><strong>研发总费用：</strong>${p.totalBudgetWan} 万元</div>
+      <div><strong>当前项目人工绩效总费用：</strong><span style="color:#d97706; font-weight:bold;">¥${(p.budget/10000).toFixed(1)}万</span></div>
+    `;
+
+    const pct = p.totalBudgetWan > 0 ? ((p.budget / (p.totalBudgetWan * 10000)) * 100).toFixed(1) : 20;
+    document.getElementById('modalBudgetRatioInput').value = pct;
+    document.getElementById('modalBudgetAmountInput').value = p.budget;
+
+    renderModalBudgetMembers(pid);
+  }
+
+  function onBudgetRatioInput(val) {
+    const p = state.projects.find(x => x.id === state.budgetTargetId);
+    if (!p) return;
+    const ratio = parseFloat(val) || 0;
+    const calculated = Math.round(p.totalBudgetWan * 10000 * (ratio / 100));
+    document.getElementById('modalBudgetAmountInput').value = calculated;
+    renderModalBudgetMembers(p.id);
+  }
+
+  function onBudgetAmountInputChanged(val) {
+    renderModalBudgetMembers(state.budgetTargetId);
+  }
+
+  function renderModalBudgetMembers(pid) {
+    const p = state.projects.find(x => x.id === pid);
+    if (!p) return;
+    const mIds = state.projectMembers[pid] || [];
+    const tbody = document.getElementById('modalBudgetMemberTableBody');
+    tbody.innerHTML = '';
+
+    const budgetVal = parseFloat(document.getElementById('modalBudgetAmountInput').value) || p.budget;
+    let totalPct = 0;
+
+    mIds.forEach(uid => {
+      const u = state.personnel.find(x => x.id === uid) || { name: '未知', rate: 800 };
+      const alKey = `${pid}_${uid}`;
+      if (!state.allocations[alKey]) {
+        state.allocations[alKey] = { percent: Number((100 / mIds.length).toFixed(2)), task: '科研攻关' };
+      }
+      const al = state.allocations[alKey];
+      const pct = parseFloat(al.percent) || 0;
+      totalPct += pct;
+      const amt = Math.round(budgetVal * (pct / 100));
+
+      tbody.innerHTML += `
+        <tr>
+          <td style="font-weight:bold;">${u.name}</td>
+          <td>${u.rate||800}元/天</td>
+          <td>
+            <input type="number" step="0.1" class="field-input" value="${pct}" style="height:34px; font-weight:bold;" 
+                   oninput="onModalMemberPercentChange('${pid}', '${uid}', this.value)" />
+          </td>
+          <td class="text-right col-highlight">¥${amt.toLocaleString()}</td>
+        </tr>
+      `;
+    });
+
+    const sumBox = document.getElementById('modalBudgetPercentSum');
+    sumBox.innerText = `当前绩效占比总计: ${totalPct.toFixed(1)}%`;
+    sumBox.style.color = Math.abs(totalPct - 100) < 0.1 ? '#0f766e' : '#dc2626';
+  }
+
+  function onModalMemberPercentChange(pid, uid, val) {
+    const alKey = `${pid}_${uid}`;
+    if (!state.allocations[alKey]) state.allocations[alKey] = {};
+    state.allocations[alKey].percent = val;
+    renderModalBudgetMembers(pid);
+  }
+
+  function confirmSaveBudget() {
+    const newBudget = parseFloat(document.getElementById('modalBudgetAmountInput').value);
+    if (isNaN(newBudget) || newBudget < 0) return alert('请输入合法金额！');
+
+    const p = state.projects.find(x => x.id === state.budgetTargetId);
+    p.budget = newBudget;
+
+    localStorage.setItem('qz_projects_data_v8', JSON.stringify(state.projects));
+    localStorage.setItem('qz_allocations_data_v8', JSON.stringify(state.allocations));
+    
+    closeModal('modalBudget');
+    refreshAdminData();
+    alert('✓ 项目人工绩效总费用及成员占比设置已成功保存并同步到后台数据库！');
+  }
+
+  function openAddProjectModal() { openModal('modalAddProj'); }
+  function confirmAddNewProject() {
+    const code = document.getElementById('newProjCode').value.trim();
+    const name = document.getElementById('newProjName').value.trim();
+    const leader = document.getElementById('newProjLeader').value.trim();
+    const totalWan = parseFloat(document.getElementById('newProjTotalBudget').value) || 0;
+    const year = document.getElementById('newProjYear').value;
+    const dept = document.getElementById('newProjDept').value.trim() || '研发部';
+    const memStr = document.getElementById('newProjMembers').value.trim();
+
+    if (!code || !name || !leader) return alert('请填写完整必填项！');
+
+    const perfBudget = Math.round(totalWan * 10000 * 0.20);
+    const newP = {
+      id: code, code, name, category: '内部', year, period: '2026/01/01-2027/12/31',
+      dept, totalBudgetWan: totalWan, budget: perfBudget, leader
+    };
+
+    const members = [leader];
+    if (memStr) {
+      memStr.split(/[,，、\s]+/).forEach(m => { if (m && !members.includes(m)) members.push(m); });
+    }
+
+    members.forEach(m => {
+      if (!state.personnel.some(u => u.name === m)) {
+        state.personnel.push({ id: "U_" + m, name: m, rate: 800, letter: getLetter(m) });
+      }
+    });
+    state.personnel.sort((a,b) => a.letter.localeCompare(b.letter));
+
+    state.projectMembers[code] = members.map(m => "U_" + m);
+    const defaultPct = Number((100 / members.length).toFixed(2));
+    members.forEach(m => {
+      state.allocations[`${code}_U_${m}`] = { percent: defaultPct, task: '科研攻关' };
+    });
+
+    state.projects.unshift(newP);
+    localStorage.setItem('qz_projects_data_v8', JSON.stringify(state.projects));
+    localStorage.setItem('qz_project_members_data_v8', JSON.stringify(state.projectMembers));
+    localStorage.setItem('qz_personnel_data_v8', JSON.stringify(state.personnel));
+    localStorage.setItem('qz_allocations_data_v8', JSON.stringify(state.allocations));
+
+    closeModal('modalAddProj');
+    refreshAdminData();
+    alert(`✓ 新项目【${name}】录入成功！`);
+  }
+
+  function openAddMemberModal() {
+    const sel = document.getElementById('modalAddMemberProjSelect');
+    sel.innerHTML = '';
+    state.projects.forEach(p => { sel.innerHTML += `<option value="${p.id}">[${p.year}] ${p.name}</option>`; });
+    document.getElementById('newMemberNameInput').value = '';
+    document.getElementById('newMemberRateInput').value = '800';
+    openModal('modalAddMember');
+  }
+
+  function confirmAddMember() {
+    const pid = document.getElementById('modalAddMemberProjSelect').value;
+    const name = document.getElementById('newMemberNameInput').value.trim();
+    const rate = parseFloat(document.getElementById('newMemberRateInput').value) || 800;
+    if (!name) return alert('请输入姓名！');
+
+    const uid = "U_" + name;
+    let existUser = state.personnel.find(u => u.id === uid);
+    if (!existUser) {
+      existUser = { id: uid, name, rate, letter: getLetter(name) };
+      state.personnel.push(existUser);
+      state.personnel.sort((a,b) => a.letter.localeCompare(b.letter));
+    } else {
+      existUser.rate = rate;
+    }
+
+    if (!state.projectMembers[pid]) state.projectMembers[pid] = [];
+    if (!state.projectMembers[pid].includes(uid)) {
+      state.projectMembers[pid].push(uid);
+      const mIds = state.projectMembers[pid];
+      const newPct = Number((100 / mIds.length).toFixed(2));
+      mIds.forEach(id => {
+        if (!state.allocations[`${pid}_${id}`]) {
+          state.allocations[`${pid}_${id}`] = { percent: newPct, task: '科研攻关' };
+        }
+      });
+    }
+
+    localStorage.setItem('qz_personnel_data_v8', JSON.stringify(state.personnel));
+    localStorage.setItem('qz_project_members_data_v8', JSON.stringify(state.projectMembers));
+    localStorage.setItem('qz_allocations_data_v8', JSON.stringify(state.allocations));
+
+    closeModal('modalAddMember');
+    refreshAdminData();
+    alert(`✓ 人员【${name}】及其工时价(${rate}元/天)已成功加入项目与工时数据库！`);
+  }
+
+  function openPrintModal() {
+    const pid = document.getElementById('adminProjSelect').value;
+    const p = state.projects.find(x => x.id === pid);
+    const mIds = state.projectMembers[p.id] || [];
+    const budgetWan = (p.budget / 10000).toFixed(1);
+
+    document.getElementById('printVoucherInfo').innerHTML = `
+      <div><strong>课题名称：</strong>${p.name} (${p.code})</div>
+      <div><strong>研发总费用：</strong>¥${p.totalBudgetWan}万 | <strong>项目人工绩效总费用：</strong>¥${budgetWan}万</div>
+      <div><strong>承担部门：</strong>${p.dept} | <strong>负责人：</strong>${p.leader}</div>
+    `;
+
+    const tbody = document.getElementById('printVoucherTableBody');
+    tbody.innerHTML = '';
+    mIds.forEach(uid => {
+      const u = state.personnel.find(x => x.id === uid) || { name: '未知', rate: 800 };
+      const al = state.allocations[`${p.id}_${uid}`] || { percent: 0 };
+      const amt = Math.round(p.budget * (parseFloat(al.percent || 0) / 100));
+      const days = (amt / (u.rate || 800)).toFixed(1);
+      tbody.innerHTML += `
+        <tr>
+          <td>${u.name}</td>
+          <td>${u.rate||800}元/天</td>
+          <td class="text-right" style="font-weight:bold; color:#0f766e;">${days} 天</td>
+        </tr>
+      `;
+    });
+
+    openModal('modalPrint');
+  }
+
+  function exportProjectCSV() {
+    const pid = document.getElementById('adminProjSelect').value;
+    const p = state.projects.find(x => x.id === pid);
+    const mIds = state.projectMembers[p.id] || [];
+
+    let csv = '\uFEFF';
+    csv += `项目编号,${p.code}\n项目全称,${p.name}\n项目人工绩效总费用(万元),${(p.budget/10000).toFixed(1)}\n\n`;
+    csv += `序号,成员姓名,工时单价(元/天),核算工时(天),人员签字\n`;
+
+    mIds.forEach((uid, idx) => {
+      const u = state.personnel.find(x => x.id === uid) || { name: '未知', rate: 800 };
+      const al = state.allocations[`${p.id}_${uid}`] || { percent: 0 };
+      const pct = parseFloat(al.percent) || 0;
+      const amt = Math.round(p.budget * (pct / 100));
+      const days = (amt / (u.rate || 800)).toFixed(1);
+      csv += `"${idx + 1}","${u.name}","${u.rate||800}","${days}",""\n`;
+    });
+
+    downloadCSV(csv, `项目工时核算单_${p.code}.csv`);
+  }
+
+  function exportPersonCSV() {
+    const uid = document.getElementById('adminPersonSelect').value;
+    const u = state.personnel.find(x => x.id === uid);
+
+    let csv = '\uFEFF';
+    csv += `科研人员姓名,${u.name}\n工时单价(元/天),${u.rate||800}\n\n`;
+    csv += `序号,项目编号,项目全称,核定工时(天),人员签字\n`;
+
+    let totalDays = 0;
+    let idx = 1;
+    state.projects.forEach(p => {
+      if ((state.projectMembers[p.id] || []).includes(u.id)) {
+        const al = state.allocations[`${p.id}_${u.id}`] || { percent: 0 };
+        const pct = parseFloat(al.percent) || 0;
+        const amt = Math.round(p.budget * (pct / 100));
+        const days = amt / (u.rate || 800);
+        totalDays += days;
+        csv += `"${idx++}","${p.code}","${p.name}","${days.toFixed(1)}",""\n`;
+      }
+    });
+    csv += `合计,"-","-","${totalDays.toFixed(1)}",""\n`;
+
+    downloadCSV(csv, `个人项目工时台账_${u.name}.csv`);
+  }
+
+  function downloadCSV(content, filename) {
+    const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    const url = URL.createObjectURL(blob);
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  function openModal(id) { document.getElementById(id).classList.add('show'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+  window.onload = function() {
+    initData();
+    goWelcomePage();
+  };
+</script>
+
+</body>
+</html>
